@@ -11,6 +11,12 @@
       "name": "Woody",
       "image": "https://m.media-amazon.com/images/I/71H6J6W4ZCL.jpg",
       "likes": 3
+    },
+    {
+      "name": "nnnnn",
+      "image": "",
+      "likes": 0,
+      "id": "Dv-cuiIxNsE"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

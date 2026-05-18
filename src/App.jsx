@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import ToyCard from "./components/ToyCard";
+import "./App.css";
+
+import ToyContainer from "./components/ToyContainer";
 import ToyForm from "./components/ToyForm";
 
 function App() {
@@ -23,7 +25,9 @@ function App() {
       }),
     })
       .then((r) => r.json())
-      .then((toy) => setToys([...toys, toy]));
+      .then((toy) => {
+        setToys([...toys, toy]);
+      });
   }
 
   function handleDeleteToy(id) {
@@ -31,26 +35,25 @@ function App() {
       method: "DELETE",
     }).then(() => {
       const updatedToys = toys.filter((toy) => toy.id !== id);
+
       setToys(updatedToys);
     });
   }
 
-  function handleLikeToy(updatedToy) {
-    fetch(`http://localhost:3001/toys/${updatedToy.id}`, {
+  function handleLikeToy(toy) {
+    fetch(`http://localhost:3001/toys/${toy.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        likes: updatedToy.likes + 1,
+        likes: toy.likes + 1,
       }),
     })
       .then((r) => r.json())
-      .then((updatedToyFromServer) => {
-        const updatedToys = toys.map((toy) =>
-          toy.id === updatedToyFromServer.id
-            ? updatedToyFromServer
-            : toy
+      .then((updatedToy) => {
+        const updatedToys = toys.map((t) =>
+          t.id === updatedToy.id ? updatedToy : t
         );
 
         setToys(updatedToys);
@@ -61,16 +64,11 @@ function App() {
     <div className="App">
       <ToyForm onAddToy={handleAddToy} />
 
-      <div className="card-container">
-        {toys.map((toy) => (
-          <ToyCard
-            key={toy.id}
-            toy={toy}
-            onDeleteToy={handleDeleteToy}
-            onLikeToy={handleLikeToy}
-          />
-        ))}
-      </div>
+      <ToyContainer
+        toys={toys}
+        onDeleteToy={handleDeleteToy}
+        onLikeToy={handleLikeToy}
+      />
     </div>
   );
 }
