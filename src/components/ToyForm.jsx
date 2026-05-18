@@ -19,8 +19,9 @@ function ToyForm({ onAddToy }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="toy-form">
+    <form onSubmit={handleSubmit}>
       <input
+        name="name"
         type="text"
         placeholder="Toy name"
         value={name}
@@ -28,6 +29,7 @@ function ToyForm({ onAddToy }) {
       />
 
       <input
+        name="image"
         type="text"
         placeholder="Image URL"
         value={image}
