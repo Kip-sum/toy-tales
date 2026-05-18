@@ -1,0 +1,17 @@
+{
+  "toys": [
+    {
+      "id": "1",
+      "name": "Buzz Lightyear",
+      "image": "https://m.media-amazon.com/images/I/61s9Xj8vHIL.jpg",
+      "likes": 6
+    },
+    {
+      "id": "2",
+      "name": "Woody",
+      "image": "https://m.media-amazon.com/images/I/71H6J6W4ZCL.jpg",
+      "likes": 3
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}
