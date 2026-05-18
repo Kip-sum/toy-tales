@@ -12,25 +12,36 @@ function ToyForm({ onAddToy }) {
       image,
     };
 
-    onAddToy(newToy);
+    fetch("http://localhost:3001/toys", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ...newToy,
+        likes: 0,
+      }),
+    })
+      .then((r) => r.json())
+      .then((toy) => onAddToy(toy));
 
     setName("");
     setImage("");
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="NewToyForm" onSubmit={handleSubmit}>
       <input
-        name="name"
         type="text"
+        name="name"
         placeholder="Toy name"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
 
       <input
-        name="image"
         type="text"
+        name="image"
         placeholder="Image URL"
         value={image}
         onChange={(e) => setImage(e.target.value)}

@@ -5,32 +5,27 @@ import ToyForm from "./components/ToyForm";
 function App() {
   const [toys, setToys] = useState([]);
 
-  // GET ALL TOYS
   useEffect(() => {
     fetch("http://localhost:3001/toys")
-      .then((res) => res.json())
-      .then((data) => setToys(data));
+      .then((r) => r.json())
+      .then((toys) => setToys(toys));
   }, []);
 
-  // ADD TOY
-  function handleAddToy(newToyData) {
+  function handleAddToy(newToy) {
     fetch("http://localhost:3001/toys", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        ...newToyData,
+        ...newToy,
         likes: 0,
       }),
     })
-      .then((res) => res.json())
-      .then((newToy) => {
-        setToys([...toys, newToy]);
-      });
+      .then((r) => r.json())
+      .then((toy) => setToys([...toys, toy]));
   }
 
-  // DELETE TOY
   function handleDeleteToy(id) {
     fetch(`http://localhost:3001/toys/${id}`, {
       method: "DELETE",
@@ -40,23 +35,22 @@ function App() {
     });
   }
 
-  // LIKE TOY
-  function handleLikeToy(clickedToy) {
-    const updatedLikes = clickedToy.likes + 1;
-
-    fetch(`http://localhost:3001/toys/${clickedToy.id}`, {
+  function handleLikeToy(updatedToy) {
+    fetch(`http://localhost:3001/toys/${updatedToy.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        likes: updatedLikes,
+        likes: updatedToy.likes + 1,
       }),
     })
-      .then((res) => res.json())
-      .then((updatedToy) => {
+      .then((r) => r.json())
+      .then((updatedToyFromServer) => {
         const updatedToys = toys.map((toy) =>
-          toy.id === updatedToy.id ? updatedToy : toy
+          toy.id === updatedToyFromServer.id
+            ? updatedToyFromServer
+            : toy
         );
 
         setToys(updatedToys);
@@ -64,12 +58,10 @@ function App() {
   }
 
   return (
-    <div className="app">
-      <h1>Toy Tales</h1>
-
+    <div className="App">
       <ToyForm onAddToy={handleAddToy} />
 
-      <div className="toy-container">
+      <div className="card-container">
         {toys.map((toy) => (
           <ToyCard
             key={toy.id}
